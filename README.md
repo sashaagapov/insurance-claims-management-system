@@ -1,0 +1,79 @@
+# DICEUS Claims Module Assessment
+
+This repository contains a planned backend-first MVP for a simplified Claims Management System in the insurance domain.
+
+
+## Project Idea
+
+The system will model a simplified claim lifecycle:
+
+- A user creates a claim after a loss event.
+- The first claim creation process is called FNOL, or First Notice of Loss.
+- A claim can be linked to a simulated insurance policy.
+- A claim contains loss details, claimant parties, risk objects, status, reserves, and audit log records.
+- A reserve represents an expected financial cost of the claim.
+- Small reserves are auto-approved.
+- Larger reserves require supervisor or manager approval.
+- A user must not approve their own reserve.
+- Approved reserves trigger a Hangfire background job that simulates GL posting and writes an audit log entry.
+
+## MVP Direction
+
+This is a backend-first MVP. The first demo path should work through Swagger/OpenAPI before any frontend is added.
+
+The backend is the main assessment focus because it shows:
+
+- domain modeling
+- API design
+- validation
+- persistence
+- business rules
+- background processing
+- auditability
+- explainable architecture
+
+## Planned Stack
+
+- ASP.NET Core Web API
+- Clean Architecture
+- EF Core
+- SQL Server
+- Docker-based SQL Server for local reproducibility
+- MediatR
+- FluentValidation
+- Swagger/OpenAPI
+- Hangfire
+- Optional Angular frontend after the backend core is stable
+
+## Planned Demo Path
+
+1. Start the API.
+2. Open Swagger.
+3. Search seeded policies.
+4. Create a claim through FNOL.
+5. View claim details.
+6. View audit log entries.
+7. Transition claim status.
+8. Create a reserve under 10,000 and show auto-approval.
+9. Create a reserve over 10,000 and show pending approval.
+10. Try self-approval and show the validation error.
+11. Approve the reserve as supervisor or manager.
+12. Show the Hangfire GL posting audit entry.
+
+
+
+Future AI work should:
+
+- read the planning documents before coding
+- implement small vertical slices
+- keep the code explainable for a beginner-level .NET developer
+- document decisions and tradeoffs
+- avoid overbuilding
+- run build/tests when possible
+
+
+## Current Status
+
+Phase 0 is repository/context setup only.
+
+Application implementation has intentionally not started yet. The next step is to review the plan and then approve Phase 1: backend solution scaffold.
