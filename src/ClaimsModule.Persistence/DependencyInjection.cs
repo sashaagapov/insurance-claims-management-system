@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClaimsModule.Persistence;
 
@@ -9,7 +10,12 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // EF Core DbContext registration will be added in Phase 2.
+        var connectionString = configuration.GetConnectionString("DefaultConnection")
+            ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+
+        services.AddDbContext<ClaimsModuleDbContext>(options =>
+            options.UseSqlServer(connectionString));
+
         return services;
     }
 }

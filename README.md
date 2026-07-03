@@ -74,8 +74,19 @@ Future AI work should:
 
 ## Current Status
 
-Phase 1 backend scaffold is completed.
+Phase 2 domain model and EF Core persistence setup is completed.
 
-The repository now contains a .NET 9 Clean Architecture solution with separate Domain, Application, Persistence, Infrastructure, and API projects. The API currently exposes only a simple `/health` endpoint and Swagger in development.
+The repository now contains a .NET 9 Clean Architecture solution with separate Domain, Application, Persistence, Infrastructure, and API projects. The Domain project contains the initial claims-domain entities and enums. The Persistence project contains the EF Core DbContext, entity configurations, seed data, and the initial migration.
 
-Claim logic, reserve logic, EF entities, migrations, authentication, and frontend code have intentionally not been implemented yet.
+The API currently exposes only a simple `/health` endpoint and Swagger in development. Claim creation endpoints, MediatR use cases, reserve approval workflow, authentication, Hangfire processing, and frontend code have intentionally not been implemented yet.
+
+## Local Database
+
+For local development, SQL Server can run through Docker:
+
+```bash
+docker compose up -d
+dotnet ef database update --project src/ClaimsModule.Persistence --startup-project src/ClaimsModule.API
+```
+
+The Docker password in `docker-compose.yml` and `appsettings.Development.json` is fake local development configuration, not production credentials.

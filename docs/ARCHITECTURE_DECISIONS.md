@@ -97,3 +97,19 @@ The code must be explainable by a beginner-level .NET developer during review.
 Tradeoff:
 
 The code may be less abstract than a senior enterprise system, but it will be easier to understand and defend.
+
+## Decision 7: Protect Audit History With Restrictive Delete Behavior
+
+Status: Accepted
+
+Decision:
+
+Use restrictive delete behavior for audit log relationships and other relationships where automatic cascading could remove important history.
+
+Reason:
+
+Audit entries are intended to be append-only evidence of important actions. Future application code should add new audit entries instead of editing or deleting history.
+
+Tradeoff:
+
+Some delete operations may require explicit cleanup or may be blocked by the database. This is acceptable for the MVP because claim auditability is more important than convenient deletion.

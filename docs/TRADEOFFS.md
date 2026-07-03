@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 0: repository/context setup
+- Phase 2: domain model and EF Core persistence setup
 
 Implemented:
 
@@ -17,17 +17,25 @@ Implemented:
 - Architecture decision log
 - AI workflow log template
 - Demo script
+- .NET 9 Clean Architecture solution scaffold
+- Initial domain entities and enums
+- EF Core DbContext
+- EF Core entity configurations
+- Seed data for policies, cause-of-loss codes, and mock users
+- SQL Server local development setup
 
 Not implemented yet:
 
-- .NET solution
-- API
-- database
-- domain model
 - frontend
+- claim creation endpoints
+- MediatR commands and queries
+- reserve approval workflow
+- Hangfire GL posting
+- real authentication
 
 Reason:
 
+The project is being built phase by phase so each part remains explainable, reviewable, and realistic for the assessment.
 
 ## Simplifications
 
@@ -40,6 +48,7 @@ Planned MVP simplifications:
 - Simulated GL posting instead of integration with a real finance system
 - Basic reserve approval thresholds
 - Minimal document handling, or no document handling, unless time allows
+- Local Docker SQL Server uses fake development credentials only
 
 ## Intentionally Out Of Scope
 
