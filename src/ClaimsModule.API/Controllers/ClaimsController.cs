@@ -1,6 +1,8 @@
 using ClaimsModule.Application.Claims.CreateClaim;
 using ClaimsModule.Application.Claims.GetClaimById;
 using ClaimsModule.Application.Claims.GetClaims;
+using ClaimsModule.Application.Claims.UpdateClaimStatus;
+using ClaimsModule.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -47,4 +49,35 @@ public class ClaimsController(ISender sender) : ControllerBase
 
         return Created($"/api/claims/{result.Value!.ClaimId}", result.Value);
     }
+
+    [HttpPatch("{id:guid}/status")]
+    public async Task<ActionResult<UpdateClaimStatusResponse>> UpdateClaimStatus(
+        Guid id,
+        UpdateClaimStatusRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new UpdateClaimStatusCommand(id, request.NewStatus, request.ActorUserId);
+        var result = await sender.Send(command, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            return Ok(result.Value);
+        }
+
+        if (result.Error?.StartsWith("NOT_FOUND:", StringComparison.Ordinal) == true)
+        {
+            return NotFound(new { error = result.Error["NOT_FOUND:".Length..].Trim() });
+        }
+
+        if (result.Error?.StartsWith("UNPROCESSABLE:", StringComparison.Ordinal) == true)
+        {
+            return UnprocessableEntity(new { error = result.Error["UNPROCESSABLE:".Length..].Trim() });
+        }
+
+        return BadRequest(new { error = result.Error?.Replace("BAD_REQUEST:", string.Empty).Trim() });
+    }
 }
+
+public record UpdateClaimStatusRequest(
+    ClaimStatus NewStatus,
+    Guid ActorUserId);

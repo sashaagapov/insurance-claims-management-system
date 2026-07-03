@@ -74,7 +74,7 @@ Future AI work should:
 
 ## Current Status
 
-Phase 4A claim list and claim detail read endpoints are completed.
+Phase 4B claim status transitions are completed.
 
 The repository now contains a .NET 9 Clean Architecture solution with separate Domain, Application, Persistence, Infrastructure, and API projects. The Domain project contains the initial claims-domain entities and enums. The Persistence project contains the EF Core DbContext, entity configurations, seed data, and the initial migration.
 
@@ -86,8 +86,9 @@ The API currently exposes:
 - `GET /api/claims`
 - `GET /api/claims/{id}`
 - `POST /api/claims`
+- `PATCH /api/claims/{id}/status`
 
-Claim creation now goes through MediatR, FluentValidation, EF Core, and writes a `ClaimCreated` audit log entry. Claims can also be browsed through read-only list/detail endpoints. Status transitions, reserve approval workflow, authentication, Hangfire processing, and frontend code have intentionally not been implemented yet.
+Claim creation now goes through MediatR, FluentValidation, EF Core, and writes a `ClaimCreated` audit log entry. Claims can also be browsed through read-only list/detail endpoints and moved through controlled status transitions with audit logging. Reserve approval workflow, authentication, Hangfire processing, and frontend code have intentionally not been implemented yet.
 
 ## Local Database
 

@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 4A: claim list and claim detail read endpoints
+- Phase 4B: claim status transitions
 
 Implemented:
 
@@ -27,11 +27,11 @@ Implemented:
 - Minimal policy and cause-of-loss lookup endpoints for Swagger testing
 - Claim creation audit log entry
 - Read-only claim list and detail endpoints
+- Controlled claim status transition endpoint
 
 Not implemented yet:
 
 - frontend
-- claim status transitions
 - reserve approval workflow
 - Hangfire GL posting
 - real authentication
