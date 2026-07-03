@@ -74,6 +74,8 @@ Future AI work should:
 
 ## Current Status
 
-Phase 0 is repository/context setup only.
+Phase 1 backend scaffold is completed.
 
-Application implementation has intentionally not started yet. The next step is to review the plan and then approve Phase 1: backend solution scaffold.
+The repository now contains a .NET 9 Clean Architecture solution with separate Domain, Application, Persistence, Infrastructure, and API projects. The API currently exposes only a simple `/health` endpoint and Swagger in development.
+
+Claim logic, reserve logic, EF entities, migrations, authentication, and frontend code have intentionally not been implemented yet.
