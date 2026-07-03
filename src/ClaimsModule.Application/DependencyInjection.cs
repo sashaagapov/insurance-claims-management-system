@@ -1,5 +1,6 @@
 using FluentValidation;
 using MediatR;
+using ClaimsModule.Application.Common;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ClaimsModule.Application;
@@ -13,6 +14,7 @@ public static class DependencyInjection
         services.AddMediatR(configuration =>
             configuration.RegisterServicesFromAssembly(applicationAssembly));
 
+        services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
         services.AddValidatorsFromAssembly(applicationAssembly);
 
         return services;

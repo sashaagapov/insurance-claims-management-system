@@ -23,12 +23,15 @@ Implemented:
 - EF Core entity configurations
 - Seed data for policies, cause-of-loss codes, and mock users
 - SQL Server local development setup
+- FNOL claim creation endpoint
+- Minimal policy and cause-of-loss lookup endpoints for Swagger testing
+- Claim creation audit log entry
 
 Not implemented yet:
 
 - frontend
-- claim creation endpoints
-- MediatR commands and queries
+- claim list/detail endpoints
+- claim status transitions
 - reserve approval workflow
 - Hangfire GL posting
 - real authentication
@@ -49,6 +52,7 @@ Planned MVP simplifications:
 - Basic reserve approval thresholds
 - Minimal document handling, or no document handling, unless time allows
 - Local Docker SQL Server uses fake development credentials only
+- Phase 3 includes only the lookup endpoints needed to test FNOL creation, not a full claim browsing API
 
 ## Intentionally Out Of Scope
 

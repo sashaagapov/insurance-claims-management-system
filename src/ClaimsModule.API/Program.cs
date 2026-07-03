@@ -1,10 +1,14 @@
+using ClaimsModule.API.Middleware;
 using ClaimsModule.Application;
 using ClaimsModule.Infrastructure;
 using ClaimsModule.Persistence;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -19,6 +23,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ValidationExceptionMiddleware>();
 
 app.MapControllers();
 app.MapGet("/health", () => Results.Text("OK", "text/plain"))

@@ -1,9 +1,11 @@
+using ClaimsModule.Application.Interfaces;
 using ClaimsModule.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace ClaimsModule.Persistence;
 
-public class ClaimsModuleDbContext(DbContextOptions<ClaimsModuleDbContext> options) : DbContext(options)
+public class ClaimsModuleDbContext(DbContextOptions<ClaimsModuleDbContext> options)
+    : DbContext(options), IClaimsModuleDbContext
 {
     public DbSet<Policy> Policies => Set<Policy>();
     public DbSet<Claim> Claims => Set<Claim>();
