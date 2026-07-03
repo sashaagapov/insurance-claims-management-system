@@ -74,7 +74,7 @@ Future AI work should:
 
 ## Current Status
 
-Phase 6 Hangfire GL posting simulation is completed.
+Phase 7A backend MVP hardening and Swagger demo polish is completed.
 
 The repository now contains a .NET 9 Clean Architecture solution with separate Domain, Application, Persistence, Infrastructure, and API projects. The Domain project contains the initial claims-domain entities and enums. The Persistence project contains the EF Core DbContext, entity configurations, seed data, and the initial migration.
 
@@ -99,9 +99,116 @@ For local development, SQL Server can run through Docker:
 
 ```bash
 docker compose up -d
-dotnet ef database update --project src/ClaimsModule.Persistence --startup-project src/ClaimsModule.API
+dotnet tool restore
+dotnet tool run dotnet-ef database update --project src/ClaimsModule.Persistence --startup-project src/ClaimsModule.API
 ```
 
 The Docker password in `docker-compose.yml` and `appsettings.Development.json` is fake local development configuration, not production credentials.
 
 In Development, the local Hangfire dashboard is available at `/hangfire` without authentication for demo convenience only.
+
+## Demo Flow
+
+Start the local backend:
+
+```bash
+docker compose up -d
+dotnet tool restore
+dotnet tool run dotnet-ef database update --project src/ClaimsModule.Persistence --startup-project src/ClaimsModule.API
+dotnet run --project src/ClaimsModule.API/ClaimsModule.API.csproj --urls http://localhost:5188
+```
+
+Open:
+
+- Swagger: `http://localhost:5188/swagger`
+- Hangfire dashboard in Development: `http://localhost:5188/hangfire`
+
+Seeded demo IDs:
+
+- Handler user: `bbbbbbbb-0000-0000-0000-000000000001`
+- Supervisor user: `bbbbbbbb-0000-0000-0000-000000000002`
+- Manager user: `bbbbbbbb-0000-0000-0000-000000000003`
+- Auto policy: `11111111-1111-1111-1111-111111111111`
+- Collision cause of loss: `aaaaaaaa-0000-0000-0000-000000000001`
+
+Recommended Swagger path:
+
+1. `GET /api/policies`
+2. `GET /api/cause-of-loss-codes`
+3. `POST /api/claims`
+4. `GET /api/claims/{id}`
+5. `PATCH /api/claims/{id}/status`
+6. `POST /api/claims/{claimId}/reserves` with `5000 USD`; expect `Approved`, then `ReserveGlPosted`
+7. `POST /api/claims/{claimId}/reserves` with `15000 USD`; expect `PendingApproval`
+8. `PATCH /api/claims/{claimId}/reserves/{reserveId}/approve` as supervisor or manager; expect `Approved`, then `ReserveGlPosted`
+9. Create another `15000 USD` reserve and reject it as manager; expect `Rejected` and no GL posting fields
+10. Try invalid/self/forbidden cases:
+    - invalid claim transition returns `422`
+    - handler reserve approval returns `403`
+    - self-approval returns `422`
+
+### Sample Requests
+
+Create a claim:
+
+```json
+{
+  "policyId": "11111111-1111-1111-1111-111111111111",
+  "causeOfLossCodeId": "aaaaaaaa-0000-0000-0000-000000000001",
+  "lossDate": "2026-07-02",
+  "description": "Demo collision claim created through FNOL",
+  "createdByUserId": "bbbbbbbb-0000-0000-0000-000000000001",
+  "parties": [
+    {
+      "fullName": "Demo Claimant",
+      "role": "Claimant",
+      "contactEmail": "demo.claimant@example.test",
+      "contactPhone": "+380000000000"
+    }
+  ],
+  "riskObjects": [
+    {
+      "description": "Demo insured vehicle",
+      "identifier": "VIN-DEMO-001"
+    }
+  ]
+}
+```
+
+Change claim status from `Open` to `UnderInvestigation`:
+
+```json
+{
+  "newStatus": "UnderInvestigation",
+  "actorUserId": "bbbbbbbb-0000-0000-0000-000000000001"
+}
+```
+
+Create a reserve:
+
+```json
+{
+  "amount": 5000,
+  "currency": "USD",
+  "createdByUserId": "bbbbbbbb-0000-0000-0000-000000000001"
+}
+```
+
+Approve a pending reserve:
+
+```json
+{
+  "actorUserId": "bbbbbbbb-0000-0000-0000-000000000002"
+}
+```
+
+Reject a pending reserve:
+
+```json
+{
+  "actorUserId": "bbbbbbbb-0000-0000-0000-000000000003",
+  "reason": "Insufficient supporting information for this reserve amount."
+}
+```
+
+After a GL posting job runs, `GET /api/claims/{id}` should show `glPostedAtUtc`, `glPostingReference`, and a `ReserveGlPosted` audit entry for approved reserves.

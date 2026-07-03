@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 6: Hangfire GL posting simulation
+- Phase 7A: backend MVP hardening and Swagger demo polish
 
 Implemented:
 
@@ -34,12 +34,14 @@ Implemented:
 - Self-approval and self-rejection prevention
 - Hangfire-backed simulated GL posting for approved reserves
 - Idempotency protection for GL posting jobs
+- README demo flow and backend demo checklist
 
 Not implemented yet:
 
 - frontend
 - real external GL or accounting integration
 - real authentication
+- automated integration tests
 
 Reason:
 
@@ -64,6 +66,7 @@ Planned MVP simplifications:
 - GL posting is simulated by writing local reserve fields and an audit log entry
 - The Hangfire dashboard is enabled only in Development and is unauthenticated for local demo convenience
 - GL posting idempotency checks `GlPostedAtUtc` so duplicate jobs do not create duplicate posting audit records
+- Phase 7A improves demo documentation only; automated tests are left as a recommended future hardening step
 
 ## Intentionally Out Of Scope
 
