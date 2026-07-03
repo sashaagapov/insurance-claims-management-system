@@ -9,6 +9,7 @@ public interface IClaimsModuleDbContext
     DbSet<Claim> Claims { get; }
     DbSet<ClaimParty> ClaimParties { get; }
     DbSet<RiskObject> RiskObjects { get; }
+    DbSet<Reserve> Reserves { get; }
     DbSet<AuditLogEntry> AuditLogEntries { get; }
     DbSet<CauseOfLossCode> CauseOfLossCodes { get; }
     DbSet<MockUser> MockUsers { get; }

@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 2: domain model and EF Core persistence setup
+- Phase 4A: claim list and claim detail read endpoints
 
 Implemented:
 
@@ -26,11 +26,11 @@ Implemented:
 - FNOL claim creation endpoint
 - Minimal policy and cause-of-loss lookup endpoints for Swagger testing
 - Claim creation audit log entry
+- Read-only claim list and detail endpoints
 
 Not implemented yet:
 
 - frontend
-- claim list/detail endpoints
 - claim status transitions
 - reserve approval workflow
 - Hangfire GL posting
