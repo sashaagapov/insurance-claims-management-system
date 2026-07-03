@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 4B: claim status transitions
+- Phase 5A: reserve creation
 
 Implemented:
 
@@ -28,11 +28,13 @@ Implemented:
 - Claim creation audit log entry
 - Read-only claim list and detail endpoints
 - Controlled claim status transition endpoint
+- Reserve creation endpoint
+- Auto-approved small reserves and pending larger reserves
 
 Not implemented yet:
 
 - frontend
-- reserve approval workflow
+- manual reserve approval and rejection workflow
 - Hangfire GL posting
 - real authentication
 
@@ -53,6 +55,7 @@ Planned MVP simplifications:
 - Minimal document handling, or no document handling, unless time allows
 - Local Docker SQL Server uses fake development credentials only
 - Phase 3 includes only the lookup endpoints needed to test FNOL creation, not a full claim browsing API
+- Phase 5A assigns reserve status by threshold but does not yet enforce manual approval, rejection, or self-approval rules
 
 ## Intentionally Out Of Scope
 

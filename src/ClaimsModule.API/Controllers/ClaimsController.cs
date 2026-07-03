@@ -2,6 +2,7 @@ using ClaimsModule.Application.Claims.CreateClaim;
 using ClaimsModule.Application.Claims.GetClaimById;
 using ClaimsModule.Application.Claims.GetClaims;
 using ClaimsModule.Application.Claims.UpdateClaimStatus;
+using ClaimsModule.Application.Reserves.CreateReserve;
 using ClaimsModule.Domain.Enums;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -76,8 +77,40 @@ public class ClaimsController(ISender sender) : ControllerBase
 
         return BadRequest(new { error = result.Error?.Replace("BAD_REQUEST:", string.Empty).Trim() });
     }
+
+    [HttpPost("{claimId:guid}/reserves")]
+    public async Task<ActionResult<CreateReserveResponse>> CreateReserve(
+        Guid claimId,
+        CreateReserveRequest request,
+        CancellationToken cancellationToken)
+    {
+        var command = new CreateReserveCommand(
+            claimId,
+            request.Amount,
+            request.Currency,
+            request.CreatedByUserId);
+
+        var result = await sender.Send(command, cancellationToken);
+
+        if (result.IsSuccess)
+        {
+            return Created($"/api/claims/{claimId}", result.Value);
+        }
+
+        if (result.Error?.StartsWith("NOT_FOUND:", StringComparison.Ordinal) == true)
+        {
+            return NotFound(new { error = result.Error["NOT_FOUND:".Length..].Trim() });
+        }
+
+        return BadRequest(new { error = result.Error?.Replace("BAD_REQUEST:", string.Empty).Trim() });
+    }
 }
 
 public record UpdateClaimStatusRequest(
     ClaimStatus NewStatus,
     Guid ActorUserId);
+
+public record CreateReserveRequest(
+    decimal Amount,
+    string Currency,
+    Guid CreatedByUserId);
