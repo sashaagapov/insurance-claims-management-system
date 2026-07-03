@@ -11,4 +11,6 @@ public record ReserveSummaryDto(
     Guid? ApprovedByUserId,
     DateTime? ApprovedAtUtc,
     Guid? RejectedByUserId,
-    DateTime? RejectedAtUtc);
+    DateTime? RejectedAtUtc,
+    DateTime? GlPostedAtUtc,
+    string? GlPostingReference);

@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 5B: reserve approval and rejection workflow
+- Phase 6: Hangfire GL posting simulation
 
 Implemented:
 
@@ -32,11 +32,13 @@ Implemented:
 - Auto-approved small reserves and pending larger reserves
 - Manual reserve approval and rejection endpoints
 - Self-approval and self-rejection prevention
+- Hangfire-backed simulated GL posting for approved reserves
+- Idempotency protection for GL posting jobs
 
 Not implemented yet:
 
 - frontend
-- Hangfire GL posting
+- real external GL or accounting integration
 - real authentication
 
 Reason:
@@ -58,6 +60,10 @@ Planned MVP simplifications:
 - Phase 3 includes only the lookup endpoints needed to test FNOL creation, not a full claim browsing API
 - Phase 5A assigns reserve status by threshold but does not yet enforce manual approval, rejection, or self-approval rules
 - Phase 5B uses seeded mock users and roles instead of a real authentication or authorization system
+- Hangfire is used for local simulated background processing, not production scheduling configuration
+- GL posting is simulated by writing local reserve fields and an audit log entry
+- The Hangfire dashboard is enabled only in Development and is unauthenticated for local demo convenience
+- GL posting idempotency checks `GlPostedAtUtc` so duplicate jobs do not create duplicate posting audit records
 
 ## Intentionally Out Of Scope
 

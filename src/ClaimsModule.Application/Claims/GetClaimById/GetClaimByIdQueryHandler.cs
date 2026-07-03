@@ -75,7 +75,9 @@ public class GetClaimByIdQueryHandler(IClaimsModuleDbContext dbContext)
                 reserve.ApprovedByUserId,
                 reserve.ApprovedAtUtc,
                 reserve.RejectedByUserId,
-                reserve.RejectedAtUtc))
+                reserve.RejectedAtUtc,
+                reserve.GlPostedAtUtc,
+                reserve.GlPostingReference))
             .ToListAsync(cancellationToken);
 
         var auditLogEntries = await dbContext.AuditLogEntries

@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClaimsModule.Application.Reserves.CreateReserve;
 
-public class CreateReserveCommandHandler(IClaimsModuleDbContext dbContext)
+public class CreateReserveCommandHandler(
+    IClaimsModuleDbContext dbContext,
+    IReserveGlPostingJobQueue reserveGlPostingJobQueue)
     : IRequestHandler<CreateReserveCommand, Result<CreateReserveResponse>>
 {
     private const decimal AutoApprovalThreshold = 10000m;
@@ -65,6 +67,11 @@ public class CreateReserveCommandHandler(IClaimsModuleDbContext dbContext)
         });
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        if (reserve.Status == ReserveStatus.Approved)
+        {
+            reserveGlPostingJobQueue.EnqueueReservePosting(reserve.Id);
+        }
 
         return Result<CreateReserveResponse>.Success(new CreateReserveResponse(
             reserve.Id,

@@ -8,7 +8,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ClaimsModule.Application.Reserves.ApproveReserve;
 
-public class ApproveReserveCommandHandler(IClaimsModuleDbContext dbContext)
+public class ApproveReserveCommandHandler(
+    IClaimsModuleDbContext dbContext,
+    IReserveGlPostingJobQueue reserveGlPostingJobQueue)
     : IRequestHandler<ApproveReserveCommand, Result<ApproveReserveResponse>>
 {
     public async Task<Result<ApproveReserveResponse>> Handle(
@@ -79,6 +81,8 @@ public class ApproveReserveCommandHandler(IClaimsModuleDbContext dbContext)
         });
 
         await dbContext.SaveChangesAsync(cancellationToken);
+
+        reserveGlPostingJobQueue.EnqueueReservePosting(reserve.Id);
 
         return Result<ApproveReserveResponse>.Success(new ApproveReserveResponse(
             reserve.Id,

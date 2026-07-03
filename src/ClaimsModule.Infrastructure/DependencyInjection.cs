@@ -1,3 +1,5 @@
+using ClaimsModule.Application.Interfaces;
+using ClaimsModule.Infrastructure.BackgroundJobs;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,7 +11,9 @@ public static class DependencyInjection
         this IServiceCollection services,
         IConfiguration configuration)
     {
-        // Hangfire and external service registrations will be added in later phases.
+        services.AddScoped<ReserveGlPostingJob>();
+        services.AddScoped<IReserveGlPostingJobQueue, ReserveGlPostingJobQueue>();
+
         return services;
     }
 }
