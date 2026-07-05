@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 8B: frontend API layer, mock user context, and app shell
+- Phase 8C: claims list dashboard
 
 Implemented:
 
@@ -40,11 +40,14 @@ Implemented:
 - Frontend API services and strict TypeScript DTO models for the existing backend endpoints
 - Mock frontend user context for the seeded Handler, Supervisor, and Manager users
 - Frontend HTTP interceptors for mock user headers and global API error snackbars
-- Placeholder frontend routes for future claims dashboard and FNOL screens
+- Claims list dashboard backed by `GET /api/claims`
+- Placeholder frontend routes for future FNOL and claim detail screens
 
 Not implemented yet:
 
-- frontend business screens
+- FNOL create claim form
+- claim detail screen
+- reserve actions UI
 - real external GL or accounting integration
 - real authentication
 
@@ -76,6 +79,7 @@ Planned MVP simplifications:
 - Integration tests create and drop a temporary SQL Server database per test run, but they still require Docker and port `1433`
 - Phase 8A uses Angular 21 because Angular CLI 22 does not support the local Node 25 runtime; this keeps the scaffold on Angular 18+ while matching available local tooling
 - Phase 8B adds a frontend `X-User-Id` header for mock context, while the current backend still uses explicit actor user IDs in request bodies; real authentication remains out of scope
+- Phase 8C adds Development-only CORS for `http://localhost:4200` so the Angular claims list can call the local API in the browser
 
 ## Intentionally Out Of Scope
 

@@ -3,18 +3,13 @@ import { Routes } from '@angular/router';
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('./home/home').then((component) => component.Home),
+    pathMatch: 'full',
+    redirectTo: 'claims',
   },
   {
     path: 'claims',
     loadComponent: () =>
-      import('./features/placeholder-page/placeholder-page').then(
-        (component) => component.PlaceholderPage,
-      ),
-    data: {
-      title: 'Claims',
-      description: 'The claims dashboard will be implemented in a later approved phase.',
-    },
+      import('./features/claims/claims-list/claims-list').then((component) => component.ClaimsList),
   },
   {
     path: 'claims/new',
@@ -25,6 +20,17 @@ export const routes: Routes = [
     data: {
       title: 'New Claim',
       description: 'The FNOL create claim form will be implemented in a later approved phase.',
+    },
+  },
+  {
+    path: 'claims/:id',
+    loadComponent: () =>
+      import('./features/placeholder-page/placeholder-page').then(
+        (component) => component.PlaceholderPage,
+      ),
+    data: {
+      title: 'Claim Detail',
+      description: 'The claim detail screen will be implemented in a later approved phase.',
     },
   },
 ];

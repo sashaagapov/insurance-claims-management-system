@@ -91,7 +91,7 @@ The API currently exposes:
 - `PATCH /api/claims/{claimId}/reserves/{reserveId}/approve`
 - `PATCH /api/claims/{claimId}/reserves/{reserveId}/reject`
 
-Claim creation now goes through MediatR, FluentValidation, EF Core, and writes a `ClaimCreated` audit log entry. Claims can also be browsed through read-only list/detail endpoints and moved through controlled status transitions with audit logging. Reserves can be created for existing claims, with small reserves auto-approved and larger reserves marked pending approval. Pending reserves can be manually approved or rejected by supervisors or managers, with self-approval blocked. Approved reserves are posted to a simulated GL through Hangfire with idempotency protection. Authentication, real GL integration, and frontend code have intentionally not been implemented yet.
+Claim creation now goes through MediatR, FluentValidation, EF Core, and writes a `ClaimCreated` audit log entry. Claims can also be browsed through read-only list/detail endpoints and moved through controlled status transitions with audit logging. Reserves can be created for existing claims, with small reserves auto-approved and larger reserves marked pending approval. Pending reserves can be manually approved or rejected by supervisors or managers, with self-approval blocked. Approved reserves are posted to a simulated GL through Hangfire with idempotency protection. The Angular frontend currently includes the app shell, mock user selector, shared API layer, and claims list dashboard. Authentication, real GL integration, FNOL UI, claim detail UI, and reserve UI have intentionally not been implemented yet.
 
 ## Automated Tests
 
@@ -130,7 +130,7 @@ npm start
 
 Open `http://localhost:4200`.
 
-The frontend API base URL is configured through Angular environment files and currently points to `http://localhost:5188`. The current shell includes shared API services, global API error handling, and a mock user selector for the seeded Handler, Supervisor, and Manager users. Business screens are intentionally reserved for later approved phases.
+The frontend API base URL is configured through Angular environment files and currently points to `http://localhost:5188`. The current shell includes shared API services, global API error handling, a mock user selector for the seeded Handler, Supervisor, and Manager users, and a claims list dashboard. FNOL, claim detail, and reserve workflows are intentionally reserved for later approved phases.
 
 ## Local Database
 

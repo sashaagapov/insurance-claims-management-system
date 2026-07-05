@@ -9,12 +9,21 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 var defaultConnection = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
+const string DevelopmentFrontendCorsPolicy = "DevelopmentFrontend";
 
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+if (builder.Environment.IsDevelopment())
+{
+    builder.Services.AddCors(options =>
+        options.AddPolicy(DevelopmentFrontendCorsPolicy, policy =>
+            policy.WithOrigins("http://localhost:4200")
+                .AllowAnyHeader()
+                .AllowAnyMethod()));
+}
 
 builder.Services.AddApplication();
 builder.Services.AddPersistence(builder.Configuration);
@@ -30,6 +39,7 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.UseCors(DevelopmentFrontendCorsPolicy);
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseHangfireDashboard("/hangfire", new DashboardOptions
