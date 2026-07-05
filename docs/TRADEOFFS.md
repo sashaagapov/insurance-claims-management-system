@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 7A: backend MVP hardening and Swagger demo polish
+- Phase 7B: automated backend integration tests
 
 Implemented:
 
@@ -35,13 +35,13 @@ Implemented:
 - Hangfire-backed simulated GL posting for approved reserves
 - Idempotency protection for GL posting jobs
 - README demo flow and backend demo checklist
+- Automated backend integration tests for the main MVP flow
 
 Not implemented yet:
 
 - frontend
 - real external GL or accounting integration
 - real authentication
-- automated integration tests
 
 Reason:
 
@@ -66,7 +66,9 @@ Planned MVP simplifications:
 - GL posting is simulated by writing local reserve fields and an audit log entry
 - The Hangfire dashboard is enabled only in Development and is unauthenticated for local demo convenience
 - GL posting idempotency checks `GlPostedAtUtc` so duplicate jobs do not create duplicate posting audit records
-- Phase 7A improves demo documentation only; automated tests are left as a recommended future hardening step
+- Phase 7A improved demo documentation only
+- Phase 7B uses the local Docker Compose SQL Server for integration tests instead of Testcontainers because SQL Server Testcontainers were unstable in the local Docker Desktop resource limits during this phase
+- Integration tests create and drop a temporary SQL Server database per test run, but they still require Docker and port `1433`
 
 ## Intentionally Out Of Scope
 
@@ -108,7 +110,6 @@ With more time, the project could add:
 - real GL or finance integration
 - document upload and storage
 - Angular UI with stronger UX
-- automated integration tests
 - CI/CD pipeline
 - deployment scripts
 - observability and structured logging

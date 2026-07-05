@@ -51,3 +51,5 @@ public class DevelopmentHangfireDashboardAuthorizationFilter : IDashboardAuthori
 {
     public bool Authorize(DashboardContext context) => true;
 }
+
+public partial class Program;

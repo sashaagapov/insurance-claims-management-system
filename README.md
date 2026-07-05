@@ -74,7 +74,7 @@ Future AI work should:
 
 ## Current Status
 
-Phase 7A backend MVP hardening and Swagger demo polish is completed.
+Phase 7B automated backend integration tests are completed.
 
 The repository now contains a .NET 9 Clean Architecture solution with separate Domain, Application, Persistence, Infrastructure, and API projects. The Domain project contains the initial claims-domain entities and enums. The Persistence project contains the EF Core DbContext, entity configurations, seed data, and the initial migration.
 
@@ -92,6 +92,29 @@ The API currently exposes:
 - `PATCH /api/claims/{claimId}/reserves/{reserveId}/reject`
 
 Claim creation now goes through MediatR, FluentValidation, EF Core, and writes a `ClaimCreated` audit log entry. Claims can also be browsed through read-only list/detail endpoints and moved through controlled status transitions with audit logging. Reserves can be created for existing claims, with small reserves auto-approved and larger reserves marked pending approval. Pending reserves can be manually approved or rejected by supervisors or managers, with self-approval blocked. Approved reserves are posted to a simulated GL through Hangfire with idempotency protection. Authentication, real GL integration, and frontend code have intentionally not been implemented yet.
+
+## Automated Tests
+
+The solution includes automated backend integration tests in `tests/ClaimsModule.IntegrationTests`.
+
+Run them with:
+
+```bash
+docker compose up -d
+dotnet test ClaimsModule.sln
+```
+
+Docker is required because the tests use the SQL Server container from `docker-compose.yml`. The test project creates a temporary SQL Server database, applies EF Core migrations, runs the API through `Microsoft.AspNetCore.Mvc.Testing`, and drops the temporary database after the run.
+
+The tests cover:
+
+- `GET /health`
+- seeded policy and cause-of-loss lookup endpoints
+- FNOL claim creation, claim list, claim detail, and `ClaimCreated` audit entry
+- valid and invalid claim status transitions
+- reserve threshold behavior for approved and pending reserves
+- handler/supervisor/manager approval and rejection rules
+- Hangfire-backed GL posting fields and direct GL posting job idempotency
 
 ## Local Database
 
