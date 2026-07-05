@@ -116,6 +116,22 @@ The tests cover:
 - handler/supervisor/manager approval and rejection rules
 - Hangfire-backed GL posting fields and direct GL posting job idempotency
 
+## Frontend Local Development
+
+The Angular frontend scaffold lives in `frontend/claims-module-web`.
+
+Run it locally with:
+
+```bash
+cd frontend/claims-module-web
+npm install
+npm start
+```
+
+Open `http://localhost:4200`.
+
+The frontend API base URL is configured through Angular environment files and currently points to `http://localhost:5188`.
+
 ## Local Database
 
 For local development, SQL Server can run through Docker:

@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 7B: automated backend integration tests
+- Phase 8A: Angular scaffold only
 
 Implemented:
 
@@ -36,10 +36,11 @@ Implemented:
 - Idempotency protection for GL posting jobs
 - README demo flow and backend demo checklist
 - Automated backend integration tests for the main MVP flow
+- Angular frontend scaffold with routing, Angular Material, an app shell, and placeholder home page
 
 Not implemented yet:
 
-- frontend
+- frontend business screens
 - real external GL or accounting integration
 - real authentication
 
@@ -69,6 +70,7 @@ Planned MVP simplifications:
 - Phase 7A improved demo documentation only
 - Phase 7B uses the local Docker Compose SQL Server for integration tests instead of Testcontainers because SQL Server Testcontainers were unstable in the local Docker Desktop resource limits during this phase
 - Integration tests create and drop a temporary SQL Server database per test run, but they still require Docker and port `1433`
+- Phase 8A uses Angular 21 because Angular CLI 22 does not support the local Node 25 runtime; this keeps the scaffold on Angular 18+ while matching available local tooling
 
 ## Intentionally Out Of Scope
 
