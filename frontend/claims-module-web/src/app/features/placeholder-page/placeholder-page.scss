@@ -1,0 +1,15 @@
+.placeholder-page {
+  display: grid;
+  min-height: calc(100dvh - 64px - 8rem);
+  place-items: start center;
+}
+
+.placeholder-card {
+  width: min(100%, 640px);
+  border-color: rgba(12, 26, 43, 0.12);
+  background: #ffffff;
+}
+
+mat-card-content {
+  color: #536176;
+}

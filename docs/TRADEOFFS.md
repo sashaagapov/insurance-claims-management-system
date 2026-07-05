@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 8A: Angular scaffold only
+- Phase 8B: frontend API layer, mock user context, and app shell
 
 Implemented:
 
@@ -37,6 +37,10 @@ Implemented:
 - README demo flow and backend demo checklist
 - Automated backend integration tests for the main MVP flow
 - Angular frontend scaffold with routing, Angular Material, an app shell, and placeholder home page
+- Frontend API services and strict TypeScript DTO models for the existing backend endpoints
+- Mock frontend user context for the seeded Handler, Supervisor, and Manager users
+- Frontend HTTP interceptors for mock user headers and global API error snackbars
+- Placeholder frontend routes for future claims dashboard and FNOL screens
 
 Not implemented yet:
 
@@ -71,6 +75,7 @@ Planned MVP simplifications:
 - Phase 7B uses the local Docker Compose SQL Server for integration tests instead of Testcontainers because SQL Server Testcontainers were unstable in the local Docker Desktop resource limits during this phase
 - Integration tests create and drop a temporary SQL Server database per test run, but they still require Docker and port `1433`
 - Phase 8A uses Angular 21 because Angular CLI 22 does not support the local Node 25 runtime; this keeps the scaffold on Angular 18+ while matching available local tooling
+- Phase 8B adds a frontend `X-User-Id` header for mock context, while the current backend still uses explicit actor user IDs in request bodies; real authentication remains out of scope
 
 ## Intentionally Out Of Scope
 

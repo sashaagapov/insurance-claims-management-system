@@ -1,0 +1,13 @@
+@if (page$ | async; as page) {
+  <section class="placeholder-page">
+    <mat-card appearance="outlined" class="placeholder-card">
+      <mat-card-header>
+        <mat-card-title>{{ page.title }}</mat-card-title>
+        <mat-card-subtitle>Planned frontend workflow</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ page.description }}</p>
+      </mat-card-content>
+    </mat-card>
+  </section>
+}

@@ -118,7 +118,7 @@ The tests cover:
 
 ## Frontend Local Development
 
-The Angular frontend scaffold lives in `frontend/claims-module-web`.
+The Angular frontend lives in `frontend/claims-module-web`.
 
 Run it locally with:
 
@@ -130,7 +130,7 @@ npm start
 
 Open `http://localhost:4200`.
 
-The frontend API base URL is configured through Angular environment files and currently points to `http://localhost:5188`.
+The frontend API base URL is configured through Angular environment files and currently points to `http://localhost:5188`. The current shell includes shared API services, global API error handling, and a mock user selector for the seeded Handler, Supervisor, and Manager users. Business screens are intentionally reserved for later approved phases.
 
 ## Local Database
 
