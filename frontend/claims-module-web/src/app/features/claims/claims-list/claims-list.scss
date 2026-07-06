@@ -29,6 +29,14 @@ p {
   background: #ffffff;
 }
 
+.filters {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: minmax(240px, 1.5fr) minmax(180px, 1fr) minmax(180px, 1fr);
+  padding: 1rem;
+  border-bottom: 1px solid rgba(12, 26, 43, 0.08);
+}
+
 .loading-state,
 .empty-state {
   display: grid;
@@ -37,6 +45,10 @@ p {
   gap: 0.75rem;
   color: #536176;
   text-align: center;
+}
+
+.filtered-empty {
+  min-height: 180px;
 }
 
 .empty-state mat-icon {
@@ -59,13 +71,12 @@ p {
   font-weight: 650;
 }
 
-.status-pill {
-  display: inline-flex;
-  align-items: center;
-  min-height: 28px;
-  padding-inline: 0.65rem;
-  border: 1px solid rgba(20, 92, 130, 0.18);
-  border-radius: 999px;
+.claims-table td,
+.claims-table th {
+  white-space: nowrap;
+}
+
+.status-chip {
   background: #eef7fb;
   color: #145c82;
   font-size: 0.82rem;
@@ -76,5 +87,9 @@ p {
   .page-header {
     align-items: start;
     flex-direction: column;
+  }
+
+  .filters {
+    grid-template-columns: 1fr;
   }
 }

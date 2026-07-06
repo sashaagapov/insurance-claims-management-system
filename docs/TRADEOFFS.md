@@ -80,6 +80,7 @@ Planned MVP simplifications:
 - Phase 8A uses Angular 21 because Angular CLI 22 does not support the local Node 25 runtime; this keeps the scaffold on Angular 18+ while matching available local tooling
 - Phase 8B adds a frontend `X-User-Id` header for mock context, while the current backend still uses explicit actor user IDs in request bodies; real authentication remains out of scope
 - Phase 8C adds Development-only CORS for `http://localhost:4200` so the Angular claims list can call the local API in the browser
+- Phase 8C uses client-side filtering for the claims list because the current backend list endpoint does not expose query parameters
 
 ## Intentionally Out Of Scope
 

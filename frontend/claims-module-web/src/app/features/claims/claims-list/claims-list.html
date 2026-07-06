@@ -18,11 +18,60 @@
         <p>No claims found.</p>
       </div>
     } @else {
+      <div class="filters" aria-label="Claim filters">
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Search</mat-label>
+          <input
+            matInput
+            type="search"
+            [value]="searchText()"
+            (input)="setSearchText($any($event.target).value)"
+            placeholder="Claim, policy, or client"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Status</mat-label>
+          <mat-select [value]="statusFilter()" (selectionChange)="setStatusFilter($event.value)">
+            <mat-option value="all">All statuses</mat-option>
+            @for (status of statuses(); track status) {
+              <mat-option [value]="status">{{ status }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" subscriptSizing="dynamic">
+          <mat-label>Cause of Loss</mat-label>
+          <mat-select [value]="causeFilter()" (selectionChange)="setCauseFilter($event.value)">
+            <mat-option value="all">All causes</mat-option>
+            @for (cause of causeOfLossCodes(); track cause) {
+              <mat-option [value]="cause">{{ cause }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      @if (filteredClaims().length === 0) {
+        <div class="empty-state filtered-empty">
+          <mat-icon aria-hidden="true">filter_alt_off</mat-icon>
+          <p>No claims match the selected filters.</p>
+        </div>
+      } @else {
       <div class="table-wrap">
-        <table mat-table [dataSource]="claims()" class="claims-table">
+        <table mat-table [dataSource]="filteredClaims()" class="claims-table">
           <ng-container matColumnDef="claimNumber">
             <th mat-header-cell *matHeaderCellDef>Claim Number</th>
             <td mat-cell *matCellDef="let claim">{{ claim.claimNumber }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="policyNumber">
+            <th mat-header-cell *matHeaderCellDef>Policy Number</th>
+            <td mat-cell *matCellDef="let claim">{{ claim.policyNumber }}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="policyholderName">
+            <th mat-header-cell *matHeaderCellDef>Policyholder</th>
+            <td mat-cell *matCellDef="let claim">{{ claim.policyholderName }}</td>
           </ng-container>
 
           <ng-container matColumnDef="lossDate">
@@ -30,10 +79,15 @@
             <td mat-cell *matCellDef="let claim">{{ claim.lossDate | date: 'mediumDate' }}</td>
           </ng-container>
 
+          <ng-container matColumnDef="causeOfLoss">
+            <th mat-header-cell *matHeaderCellDef>Cause of Loss</th>
+            <td mat-cell *matCellDef="let claim">{{ claim.causeOfLossCode }}</td>
+          </ng-container>
+
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef>Status</th>
             <td mat-cell *matCellDef="let claim">
-              <span class="status-pill">{{ claim.status }}</span>
+              <mat-chip class="status-chip" highlighted>{{ claim.status }}</mat-chip>
             </td>
           </ng-container>
 
@@ -48,6 +102,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table>
       </div>
+      }
     }
   </mat-card>
 </section>
