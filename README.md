@@ -148,6 +148,16 @@ Frontend demo path:
 12. Use the status action to move an Open claim to Under Investigation.
 13. Return to `/claims` and confirm the new claim appears in the list.
 
+## Known Simplifications
+
+- Users and roles are selected through a frontend mock user selector, not real authentication.
+- The frontend is local-only and is not deployed.
+- Claim list filters are client-side.
+- FNOL supports existing seeded policies and cause-of-loss codes only.
+- The frontend exposes only the supported `Open -> UnderInvestigation` status action.
+- Reserve actions use the existing MVP threshold rules and seeded mock roles.
+- Document upload, CI/CD, Azure deployment, and real GL integration remain out of scope.
+
 ## Local Database
 
 For local development, SQL Server can run through Docker:
