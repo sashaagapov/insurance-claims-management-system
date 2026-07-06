@@ -14,13 +14,7 @@ export const routes: Routes = [
   {
     path: 'claims/new',
     loadComponent: () =>
-      import('./features/placeholder-page/placeholder-page').then(
-        (component) => component.PlaceholderPage,
-      ),
-    data: {
-      title: 'New Claim',
-      description: 'The FNOL create claim form will be implemented in a later approved phase.',
-    },
+      import('./features/claims/fnol-form/fnol-form').then((component) => component.FnolForm),
   },
   {
     path: 'claims/:id',

@@ -1,0 +1,119 @@
+.fnol-page {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.page-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+h1,
+h2 {
+  margin: 0;
+  color: #132034;
+  letter-spacing: 0;
+}
+
+h1 {
+  font-size: clamp(1.75rem, 3vw, 2.25rem);
+  font-weight: 650;
+}
+
+h2 {
+  font-size: 1rem;
+  font-weight: 650;
+}
+
+p {
+  margin: 0.35rem 0 0;
+  color: #536176;
+}
+
+.fnol-card {
+  border-color: rgba(12, 26, 43, 0.12);
+  background: #ffffff;
+}
+
+.loading-state {
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  gap: 0.75rem;
+  color: #536176;
+}
+
+.step-content {
+  display: grid;
+  gap: 1rem;
+  padding-block: 1.25rem;
+}
+
+.form-grid,
+.review-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.wide-field {
+  grid-column: 1 / -1;
+}
+
+.repeat-section {
+  display: grid;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: 1px solid rgba(12, 26, 43, 0.1);
+  border-radius: 8px;
+  background: #fbfcfe;
+}
+
+.repeat-header,
+.step-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.step-actions {
+  justify-content: flex-end;
+}
+
+dl {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.75rem 0 0;
+}
+
+dt {
+  color: #536176;
+  font-size: 0.8rem;
+  font-weight: 650;
+}
+
+dd {
+  margin: 0.15rem 0 0;
+  color: #132034;
+}
+
+button mat-spinner {
+  display: inline-block;
+  margin-inline-end: 0.5rem;
+}
+
+@media (max-width: 760px) {
+  .page-header,
+  .repeat-header {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .form-grid,
+  .review-grid {
+    grid-template-columns: 1fr;
+  }
+}

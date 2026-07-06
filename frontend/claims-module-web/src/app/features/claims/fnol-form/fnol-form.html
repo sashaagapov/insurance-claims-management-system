@@ -1,0 +1,252 @@
+<section class="fnol-page">
+  <header class="page-header">
+    <div>
+      <h1>New Claim</h1>
+      <p>Capture first notice of loss details and submit the claim to the backend.</p>
+    </div>
+    <a mat-button routerLink="/claims">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon>
+      Claims
+    </a>
+  </header>
+
+  <mat-card appearance="outlined" class="fnol-card">
+    @if (isLoadingReferenceData()) {
+      <div class="loading-state" aria-live="polite">
+        <mat-spinner diameter="36" />
+        <span>Loading policies and reference data...</span>
+      </div>
+    } @else {
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <mat-stepper linear>
+          <mat-step [stepControl]="claimInformation">
+            <ng-template matStepLabel>Claim</ng-template>
+
+            <div class="step-content" formGroupName="claimInformation">
+              <div class="form-grid">
+                <mat-form-field appearance="outline">
+                  <mat-label>Policy</mat-label>
+                  <mat-select formControlName="policyId" required>
+                    @for (policy of policies(); track policy.id) {
+                      <mat-option [value]="policy.id">
+                        {{ policy.policyNumber }} · {{ policy.policyholderName }}
+                      </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Cause of loss</mat-label>
+                  <mat-select formControlName="causeOfLossCodeId" required>
+                    @for (cause of causeOfLossCodes(); track cause.id) {
+                      <mat-option [value]="cause.id">
+                        {{ cause.code }} · {{ cause.description }}
+                      </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label>Loss date</mat-label>
+                  <input matInput type="date" formControlName="lossDate" required />
+                  @if (claimInformation.get('lossDate')?.hasError('futureDate')) {
+                    <mat-error>Loss date cannot be in the future.</mat-error>
+                  }
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="wide-field">
+                  <mat-label>Description</mat-label>
+                  <textarea
+                    matInput
+                    formControlName="description"
+                    rows="5"
+                    maxlength="2000"
+                    required
+                  ></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="step-actions">
+                <button mat-flat-button type="button" matStepperNext>Continue</button>
+              </div>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="parties">
+            <ng-template matStepLabel>Parties</ng-template>
+
+            <div class="step-content" formArrayName="parties">
+              @for (party of parties.controls; track $index; let index = $index) {
+                <section class="repeat-section" [formGroupName]="index">
+                  <div class="repeat-header">
+                    <h2>Party {{ index + 1 }}</h2>
+                    <button
+                      mat-button
+                      type="button"
+                      (click)="removeParty(index)"
+                      [disabled]="parties.length === 1"
+                    >
+                      Remove
+                    </button>
+                  </div>
+
+                  <div class="form-grid">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Party type</mat-label>
+                      <mat-select formControlName="partyType" required>
+                        @for (partyType of partyTypes; track partyType) {
+                          <mat-option [value]="partyType">{{ partyType }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Full name</mat-label>
+                      <input matInput formControlName="fullName" maxlength="200" required />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Email</mat-label>
+                      <input matInput type="email" formControlName="email" maxlength="250" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>Phone</mat-label>
+                      <input matInput formControlName="phone" maxlength="50" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="wide-field">
+                      <mat-label>Notes</mat-label>
+                      <textarea matInput formControlName="notes" rows="3" maxlength="1000"></textarea>
+                    </mat-form-field>
+                  </div>
+                </section>
+              }
+
+              <button mat-button type="button" (click)="addParty()">
+                <mat-icon aria-hidden="true">add</mat-icon>
+                Add party
+              </button>
+
+              <div class="step-actions">
+                <button mat-button type="button" matStepperPrevious>Back</button>
+                <button mat-flat-button type="button" matStepperNext>Continue</button>
+              </div>
+            </div>
+          </mat-step>
+
+          <mat-step [stepControl]="riskObjects">
+            <ng-template matStepLabel>Risk Objects</ng-template>
+
+            <div class="step-content" formArrayName="riskObjects">
+              @for (riskObject of riskObjects.controls; track $index; let index = $index) {
+                <section class="repeat-section" [formGroupName]="index">
+                  <div class="repeat-header">
+                    <h2>Risk Object {{ index + 1 }}</h2>
+                    <button
+                      mat-button
+                      type="button"
+                      (click)="removeRiskObject(index)"
+                      [disabled]="riskObjects.length === 1"
+                    >
+                      Remove
+                    </button>
+                  </div>
+
+                  <div class="form-grid">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Object type</mat-label>
+                      <mat-select formControlName="objectType" required>
+                        @for (objectType of riskObjectTypes; track objectType) {
+                          <mat-option [value]="objectType">{{ objectType }}</mat-option>
+                        }
+                      </mat-select>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                      <mat-label>External reference</mat-label>
+                      <input matInput formControlName="externalReference" maxlength="100" />
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline" class="wide-field">
+                      <mat-label>Description</mat-label>
+                      <textarea
+                        matInput
+                        formControlName="description"
+                        rows="4"
+                        maxlength="1000"
+                        required
+                      ></textarea>
+                    </mat-form-field>
+                  </div>
+                </section>
+              }
+
+              <button mat-button type="button" (click)="addRiskObject()">
+                <mat-icon aria-hidden="true">add</mat-icon>
+                Add risk object
+              </button>
+
+              <div class="step-actions">
+                <button mat-button type="button" matStepperPrevious>Back</button>
+                <button mat-flat-button type="button" matStepperNext>Review</button>
+              </div>
+            </div>
+          </mat-step>
+
+          <mat-step>
+            <ng-template matStepLabel>Review</ng-template>
+
+            <div class="step-content review-grid">
+              <section>
+                <h2>Claim</h2>
+                <dl>
+                  <div>
+                    <dt>Policy</dt>
+                    <dd>
+                      {{ selectedPolicy()?.policyNumber }} · {{ selectedPolicy()?.policyholderName }}
+                    </dd>
+                  </div>
+                  <div>
+                    <dt>Cause</dt>
+                    <dd>{{ selectedCauseOfLoss()?.code }} · {{ selectedCauseOfLoss()?.description }}</dd>
+                  </div>
+                  <div>
+                    <dt>Loss date</dt>
+                    <dd>{{ claimInformation.get('lossDate')?.value }}</dd>
+                  </div>
+                  <div>
+                    <dt>Created by</dt>
+                    <dd>{{ authContext.activeUser().displayName }} · {{ authContext.activeUser().role }}</dd>
+                  </div>
+                </dl>
+              </section>
+
+              <section>
+                <h2>Parties</h2>
+                <p>{{ parties.length }} party record(s)</p>
+              </section>
+
+              <section>
+                <h2>Risk Objects</h2>
+                <p>{{ riskObjects.length }} risk object record(s)</p>
+              </section>
+
+              <div class="step-actions wide-field">
+                <button mat-button type="button" matStepperPrevious>Back</button>
+                <button mat-flat-button type="submit" [disabled]="form.invalid || isSubmitting()">
+                  @if (isSubmitting()) {
+                    <mat-spinner diameter="20" />
+                    Creating...
+                  } @else {
+                    Submit Claim
+                  }
+                </button>
+              </div>
+            </div>
+          </mat-step>
+        </mat-stepper>
+      </form>
+    }
+  </mat-card>
+</section>

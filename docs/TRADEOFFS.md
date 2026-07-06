@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 8C: claims list dashboard
+- Phase 8D: FNOL create claim form
 
 Implemented:
 
@@ -41,11 +41,11 @@ Implemented:
 - Mock frontend user context for the seeded Handler, Supervisor, and Manager users
 - Frontend HTTP interceptors for mock user headers and global API error snackbars
 - Claims list dashboard backed by `GET /api/claims`
-- Placeholder frontend routes for future FNOL and claim detail screens
+- FNOL create claim form backed by `POST /api/claims`
+- Placeholder frontend route for the future claim detail screen
 
 Not implemented yet:
 
-- FNOL create claim form
 - claim detail screen
 - reserve actions UI
 - real external GL or accounting integration
@@ -81,6 +81,7 @@ Planned MVP simplifications:
 - Phase 8B adds a frontend `X-User-Id` header for mock context, while the current backend still uses explicit actor user IDs in request bodies; real authentication remains out of scope
 - Phase 8C adds Development-only CORS for `http://localhost:4200` so the Angular claims list can call the local API in the browser
 - Phase 8C uses client-side filtering for the claims list because the current backend list endpoint does not expose query parameters
+- Phase 8D supports FNOL only for existing seeded policies and cause-of-loss codes; unknown policy flow, document upload, and initial reserve creation remain out of scope
 
 ## Intentionally Out Of Scope
 
