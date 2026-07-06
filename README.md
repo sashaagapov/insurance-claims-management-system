@@ -91,7 +91,7 @@ The API currently exposes:
 - `PATCH /api/claims/{claimId}/reserves/{reserveId}/approve`
 - `PATCH /api/claims/{claimId}/reserves/{reserveId}/reject`
 
-Claim creation now goes through MediatR, FluentValidation, EF Core, and writes a `ClaimCreated` audit log entry. Claims can also be browsed through read-only list/detail endpoints and moved through controlled status transitions with audit logging. Reserves can be created for existing claims, with small reserves auto-approved and larger reserves marked pending approval. Pending reserves can be manually approved or rejected by supervisors or managers, with self-approval blocked. Approved reserves are posted to a simulated GL through Hangfire with idempotency protection. The Angular frontend currently includes the app shell, mock user selector, shared API layer, claims list dashboard, FNOL create claim form, and read-only claim detail screen. Authentication, real GL integration, reserve actions UI, and status transition UI have intentionally not been implemented yet.
+Claim creation now goes through MediatR, FluentValidation, EF Core, and writes a `ClaimCreated` audit log entry. Claims can also be browsed through read-only list/detail endpoints and moved through controlled status transitions with audit logging. Reserves can be created for existing claims, with small reserves auto-approved and larger reserves marked pending approval. Pending reserves can be manually approved or rejected by supervisors or managers, with self-approval blocked. Approved reserves are posted to a simulated GL through Hangfire with idempotency protection. The Angular frontend currently includes the app shell, mock user selector, shared API layer, claims list dashboard, FNOL create claim form, claim detail screen, reserve actions, and a minimal supported claim status transition. Authentication, real GL integration, document upload, and deployment have intentionally not been implemented yet.
 
 ## Automated Tests
 
@@ -130,7 +130,7 @@ npm start
 
 Open `http://localhost:4200`.
 
-The frontend API base URL is configured through Angular environment files and currently points to `http://localhost:5188`. The current shell includes shared API services, global API error handling, a mock user selector for the seeded Handler, Supervisor, and Manager users, a claims list dashboard, an FNOL create claim form, and a read-only claim detail screen. Reserve and status action workflows are intentionally reserved for later approved phases.
+The frontend API base URL is configured through Angular environment files and currently points to `http://localhost:5188`. The current shell includes shared API services, global API error handling, a mock user selector for the seeded Handler, Supervisor, and Manager users, a claims list dashboard, an FNOL create claim form, a claim detail screen, reserve actions, and a minimal `Open -> UnderInvestigation` claim status action.
 
 Frontend demo path:
 
@@ -142,7 +142,11 @@ Frontend demo path:
 6. Submit the claim.
 7. Confirm the success message and redirect to the claim detail screen.
 8. Review Overview, Parties, Risk Objects, Reserves, and Audit Log tabs.
-9. Return to `/claims` and confirm the new claim appears in the list.
+9. Add a small reserve and confirm it is auto-approved.
+10. Add a large reserve and confirm it is pending approval.
+11. Switch demo user to Supervisor or Manager and approve or reject the pending reserve.
+12. Use the status action to move an Open claim to Under Investigation.
+13. Return to `/claims` and confirm the new claim appears in the list.
 
 ## Local Database
 

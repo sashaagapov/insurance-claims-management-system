@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 8E: claim detail screen
+- Phase 8F: reserve actions and status transition UI
 
 Implemented:
 
@@ -43,11 +43,11 @@ Implemented:
 - Claims list dashboard backed by `GET /api/claims`
 - FNOL create claim form backed by `POST /api/claims`
 - Read-only claim detail screen backed by `GET /api/claims/{id}`
+- Reserve creation, approval, and rejection UI on claim detail
+- Minimal claim status transition UI for `Open -> UnderInvestigation`
 
 Not implemented yet:
 
-- reserve actions UI
-- status transition UI
 - real external GL or accounting integration
 - real authentication
 
@@ -83,6 +83,7 @@ Planned MVP simplifications:
 - Phase 8C uses client-side filtering for the claims list because the current backend list endpoint does not expose query parameters
 - Phase 8D supports FNOL only for existing seeded policies and cause-of-loss codes; unknown policy flow, document upload, and initial reserve creation remain out of scope
 - Phase 8E displays existing reserves but intentionally does not expose reserve creation, approval, or rejection actions yet
+- Phase 8F exposes only the supported `Open -> UnderInvestigation` status transition instead of a generic transition picker
 
 ## Intentionally Out Of Scope
 

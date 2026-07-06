@@ -30,6 +30,17 @@
       <div>
         <span class="label">Status</span>
         <mat-chip highlighted>{{ currentClaim.status }}</mat-chip>
+        @if (currentClaim.status === 'Open') {
+          <button
+            mat-button
+            type="button"
+            class="status-action"
+            (click)="transitionToUnderInvestigation()"
+            [disabled]="isChangingStatus()"
+          >
+            Move to Under Investigation
+          </button>
+        }
       </div>
       <div>
         <span class="label">Policy Number</span>
@@ -136,6 +147,35 @@
 
         <mat-tab label="Reserves">
           <section class="tab-panel">
+            <form class="reserve-form" [formGroup]="reserveForm" (ngSubmit)="createReserve()">
+              <div>
+                <h2>Add Reserve</h2>
+                <p>{{ reserveAuthorityPreview() }}</p>
+              </div>
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Amount</mat-label>
+                <input matInput type="number" min="0.01" step="0.01" formControlName="amount" />
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                <mat-label>Currency</mat-label>
+                <mat-select formControlName="currency">
+                  <mat-option value="USD">USD</mat-option>
+                  <mat-option value="EUR">EUR</mat-option>
+                  <mat-option value="UAH">UAH</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <button mat-flat-button type="submit" [disabled]="reserveForm.invalid || isCreatingReserve()">
+                @if (isCreatingReserve()) {
+                  Creating...
+                } @else {
+                  Add Reserve
+                }
+              </button>
+            </form>
+
             @if (currentClaim.reserves.length === 0) {
               <p class="empty-text">No reserves recorded.</p>
             } @else {
@@ -164,6 +204,53 @@
                   <ng-container matColumnDef="glPostingReference">
                     <th mat-header-cell *matHeaderCellDef>GL Reference</th>
                     <td mat-cell *matCellDef="let reserve">{{ reserve.glPostingReference ?? '-' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="actions">
+                    <th mat-header-cell *matHeaderCellDef>Actions</th>
+                    <td mat-cell *matCellDef="let reserve">
+                      @if (reserve.status === 'PendingApproval' && canManageReserves()) {
+                        @if (rejectReserveId() === reserve.id) {
+                          <form class="reject-form" [formGroup]="rejectForm">
+                            <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                              <mat-label>Reject reason</mat-label>
+                              <input matInput formControlName="reason" maxlength="1000" />
+                            </mat-form-field>
+                            <button
+                              mat-button
+                              type="button"
+                              (click)="rejectReserve(reserve.id)"
+                              [disabled]="rejectForm.invalid || activeReserveActionId() === reserve.id"
+                            >
+                              Confirm
+                            </button>
+                            <button mat-button type="button" (click)="cancelRejectReserve()">Cancel</button>
+                          </form>
+                        } @else {
+                          <div class="row-actions">
+                            <button
+                              mat-button
+                              type="button"
+                              (click)="approveReserve(reserve.id)"
+                              [disabled]="activeReserveActionId() === reserve.id"
+                            >
+                              Approve
+                            </button>
+                            <button
+                              mat-button
+                              type="button"
+                              (click)="startRejectReserve(reserve.id)"
+                              [disabled]="activeReserveActionId() === reserve.id"
+                            >
+                              Reject
+                            </button>
+                          </div>
+                        }
+                      } @else if (reserve.status === 'PendingApproval') {
+                        <span class="muted-action">Supervisor or manager only</span>
+                      } @else {
+                        <span class="muted-action">No action</span>
+                      }
+                    </td>
                   </ng-container>
 
                   <tr mat-header-row *matHeaderRowDef="reserveColumns"></tr>
