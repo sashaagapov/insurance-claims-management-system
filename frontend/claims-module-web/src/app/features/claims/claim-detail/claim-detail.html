@@ -1,0 +1,211 @@
+<section class="claim-detail">
+  <header class="page-header">
+    <div>
+      <h1>{{ claim()?.claimNumber ?? 'Claim Detail' }}</h1>
+      @if (claim(); as currentClaim) {
+        <p>
+          {{ currentClaim.policyNumber }} · {{ currentClaim.policyholderName }} ·
+          {{ currentClaim.causeOfLossCode }}
+        </p>
+      }
+    </div>
+    <a mat-button routerLink="/claims">
+      <mat-icon aria-hidden="true">arrow_back</mat-icon>
+      Claims
+    </a>
+  </header>
+
+  @if (isLoading()) {
+    <mat-card appearance="outlined" class="state-card">
+      <mat-spinner diameter="36" />
+      <span>Loading claim details...</span>
+    </mat-card>
+  } @else if (errorMessage()) {
+    <mat-card appearance="outlined" class="state-card">
+      <mat-icon aria-hidden="true">error_outline</mat-icon>
+      <span>{{ errorMessage() }}</span>
+    </mat-card>
+  } @else if (claim(); as currentClaim) {
+    <mat-card appearance="outlined" class="summary-card">
+      <div>
+        <span class="label">Status</span>
+        <mat-chip highlighted>{{ currentClaim.status }}</mat-chip>
+      </div>
+      <div>
+        <span class="label">Policy Number</span>
+        <strong>{{ currentClaim.policyNumber }}</strong>
+      </div>
+      <div>
+        <span class="label">Policyholder</span>
+        <strong>{{ currentClaim.policyholderName }}</strong>
+      </div>
+      <div>
+        <span class="label">Loss Date</span>
+        <strong>{{ currentClaim.lossDate | date: 'mediumDate' }}</strong>
+      </div>
+    </mat-card>
+
+    <mat-card appearance="outlined" class="detail-card">
+      <mat-tab-group>
+        <mat-tab label="Overview">
+          <section class="tab-panel overview-grid">
+            <div>
+              <span class="label">Claim Number</span>
+              <strong>{{ currentClaim.claimNumber }}</strong>
+            </div>
+            <div>
+              <span class="label">Product Type</span>
+              <strong>{{ currentClaim.productType }}</strong>
+            </div>
+            <div>
+              <span class="label">Cause of Loss</span>
+              <strong>{{ currentClaim.causeOfLossCode }} · {{ currentClaim.causeOfLossDescription }}</strong>
+            </div>
+            <div>
+              <span class="label">Reported</span>
+              <strong>{{ currentClaim.reportedAtUtc | date: 'medium' }}</strong>
+            </div>
+            <div class="wide-field">
+              <span class="label">Description</span>
+              <p>{{ currentClaim.description }}</p>
+            </div>
+          </section>
+        </mat-tab>
+
+        <mat-tab label="Parties">
+          <section class="tab-panel">
+            @if (currentClaim.parties.length === 0) {
+              <p class="empty-text">No parties recorded.</p>
+            } @else {
+              <div class="table-wrap">
+                <table mat-table [dataSource]="currentClaim.parties">
+                  <ng-container matColumnDef="partyType">
+                    <th mat-header-cell *matHeaderCellDef>Type</th>
+                    <td mat-cell *matCellDef="let party">{{ party.partyType }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="fullName">
+                    <th mat-header-cell *matHeaderCellDef>Name</th>
+                    <td mat-cell *matCellDef="let party">{{ party.fullName }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="email">
+                    <th mat-header-cell *matHeaderCellDef>Email</th>
+                    <td mat-cell *matCellDef="let party">{{ party.email ?? '-' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="phone">
+                    <th mat-header-cell *matHeaderCellDef>Phone</th>
+                    <td mat-cell *matCellDef="let party">{{ party.phone ?? '-' }}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="partyColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: partyColumns"></tr>
+                </table>
+              </div>
+            }
+          </section>
+        </mat-tab>
+
+        <mat-tab label="Risk Objects">
+          <section class="tab-panel">
+            @if (currentClaim.riskObjects.length === 0) {
+              <p class="empty-text">No risk objects recorded.</p>
+            } @else {
+              <div class="table-wrap">
+                <table mat-table [dataSource]="currentClaim.riskObjects">
+                  <ng-container matColumnDef="objectType">
+                    <th mat-header-cell *matHeaderCellDef>Type</th>
+                    <td mat-cell *matCellDef="let riskObject">{{ riskObject.objectType }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="externalReference">
+                    <th mat-header-cell *matHeaderCellDef>Reference</th>
+                    <td mat-cell *matCellDef="let riskObject">
+                      {{ riskObject.externalReference ?? '-' }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="description">
+                    <th mat-header-cell *matHeaderCellDef>Description</th>
+                    <td mat-cell *matCellDef="let riskObject">{{ riskObject.description }}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="riskObjectColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: riskObjectColumns"></tr>
+                </table>
+              </div>
+            }
+          </section>
+        </mat-tab>
+
+        <mat-tab label="Reserves">
+          <section class="tab-panel">
+            @if (currentClaim.reserves.length === 0) {
+              <p class="empty-text">No reserves recorded.</p>
+            } @else {
+              <div class="table-wrap">
+                <table mat-table [dataSource]="currentClaim.reserves">
+                  <ng-container matColumnDef="amount">
+                    <th mat-header-cell *matHeaderCellDef>Amount</th>
+                    <td mat-cell *matCellDef="let reserve">
+                      {{ reserve.amount | currency: reserve.currency : 'symbol' : '1.2-2' }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="currency">
+                    <th mat-header-cell *matHeaderCellDef>Currency</th>
+                    <td mat-cell *matCellDef="let reserve">{{ reserve.currency }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="status">
+                    <th mat-header-cell *matHeaderCellDef>Status</th>
+                    <td mat-cell *matCellDef="let reserve">{{ reserve.status }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="createdAtUtc">
+                    <th mat-header-cell *matHeaderCellDef>Created</th>
+                    <td mat-cell *matCellDef="let reserve">
+                      {{ reserve.createdAtUtc | date: 'medium' }}
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="glPostingReference">
+                    <th mat-header-cell *matHeaderCellDef>GL Reference</th>
+                    <td mat-cell *matCellDef="let reserve">{{ reserve.glPostingReference ?? '-' }}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="reserveColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: reserveColumns"></tr>
+                </table>
+              </div>
+            }
+          </section>
+        </mat-tab>
+
+        <mat-tab label="Audit Log">
+          <section class="tab-panel">
+            @if (auditLogEntries().length === 0) {
+              <p class="empty-text">No audit entries recorded.</p>
+            } @else {
+              <div class="table-wrap">
+                <table mat-table [dataSource]="auditLogEntries()">
+                  <ng-container matColumnDef="createdAtUtc">
+                    <th mat-header-cell *matHeaderCellDef>Created</th>
+                    <td mat-cell *matCellDef="let entry">{{ entry.createdAtUtc | date: 'medium' }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="action">
+                    <th mat-header-cell *matHeaderCellDef>Action</th>
+                    <td mat-cell *matCellDef="let entry">{{ entry.action }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="actorUserId">
+                    <th mat-header-cell *matHeaderCellDef>Actor</th>
+                    <td mat-cell *matCellDef="let entry">{{ entry.actorUserId }}</td>
+                  </ng-container>
+                  <ng-container matColumnDef="details">
+                    <th mat-header-cell *matHeaderCellDef>Details</th>
+                    <td mat-cell *matCellDef="let entry">{{ entry.details ?? '-' }}</td>
+                  </ng-container>
+
+                  <tr mat-header-row *matHeaderRowDef="auditColumns"></tr>
+                  <tr mat-row *matRowDef="let row; columns: auditColumns"></tr>
+                </table>
+              </div>
+            }
+          </section>
+        </mat-tab>
+      </mat-tab-group>
+    </mat-card>
+  }
+</section>

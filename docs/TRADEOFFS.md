@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 8D: FNOL create claim form
+- Phase 8E: claim detail screen
 
 Implemented:
 
@@ -42,12 +42,12 @@ Implemented:
 - Frontend HTTP interceptors for mock user headers and global API error snackbars
 - Claims list dashboard backed by `GET /api/claims`
 - FNOL create claim form backed by `POST /api/claims`
-- Placeholder frontend route for the future claim detail screen
+- Read-only claim detail screen backed by `GET /api/claims/{id}`
 
 Not implemented yet:
 
-- claim detail screen
 - reserve actions UI
+- status transition UI
 - real external GL or accounting integration
 - real authentication
 
@@ -82,6 +82,7 @@ Planned MVP simplifications:
 - Phase 8C adds Development-only CORS for `http://localhost:4200` so the Angular claims list can call the local API in the browser
 - Phase 8C uses client-side filtering for the claims list because the current backend list endpoint does not expose query parameters
 - Phase 8D supports FNOL only for existing seeded policies and cause-of-loss codes; unknown policy flow, document upload, and initial reserve creation remain out of scope
+- Phase 8E displays existing reserves but intentionally does not expose reserve creation, approval, or rejection actions yet
 
 ## Intentionally Out Of Scope
 

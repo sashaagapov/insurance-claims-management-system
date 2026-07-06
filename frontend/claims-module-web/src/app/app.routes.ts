@@ -19,12 +19,8 @@ export const routes: Routes = [
   {
     path: 'claims/:id',
     loadComponent: () =>
-      import('./features/placeholder-page/placeholder-page').then(
-        (component) => component.PlaceholderPage,
+      import('./features/claims/claim-detail/claim-detail').then(
+        (component) => component.ClaimDetail,
       ),
-    data: {
-      title: 'Claim Detail',
-      description: 'The claim detail screen will be implemented in a later approved phase.',
-    },
   },
 ];
