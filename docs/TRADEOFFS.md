@@ -6,7 +6,7 @@ Use this document to explain what the MVP includes, what is simplified, what is 
 
 Current phase:
 
-- Phase 8G: frontend docs, polish, final smoke review
+- Phase 9C (release candidate)
 
 Implemented:
 
@@ -88,7 +88,7 @@ Planned MVP simplifications:
 - Phase 8D supports FNOL only for existing seeded policies and cause-of-loss codes; unknown policy flow, document upload, and initial reserve creation remain out of scope
 - Phase 8E displays existing reserves but intentionally does not expose reserve creation, approval, or rejection actions yet
 - Phase 8F exposes only the supported `Open -> UnderInvestigation` status transition instead of a generic transition picker
-- Phase 8G keeps the frontend local-only; deployment and CI/CD remain documented gaps
+- Phase 9C release candidate keeps the frontend local-only; deployment and CI/CD remain documented gaps
 - Backend lifecycle support remains intentionally limited to the MVP transitions already implemented
 
 ## Intentionally Out Of Scope
