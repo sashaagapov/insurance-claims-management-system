@@ -1,46 +1,37 @@
 <div class="app-shell">
-  <div class="app-layout">
-    <nav class="app-sidebar">
-      <div class="sidebar-logo">
-        <mat-icon style="color: var(--accent)">shield</mat-icon>
-        <span>Claims</span>
-      </div>
-      <div class="sidebar-nav">
-        <a routerLink="/claims" routerLinkActive="active" class="sidebar-link">
-          <mat-icon>list_alt</mat-icon>
-          <span>Claims</span>
-        </a>
-        <a routerLink="/claims/new" routerLinkActive="active" class="sidebar-link">
-          <mat-icon>add_circle_outline</mat-icon>
-          <span>New Claim</span>
-        </a>
-      </div>
+  <mat-toolbar class="app-toolbar">
+    <a class="brand-link" routerLink="/" aria-label="Claims Module home">
+      <mat-icon aria-hidden="true">assignment</mat-icon>
+      <span class="app-title">Claims Module</span>
+    </a>
+
+    <nav class="app-nav" aria-label="Primary navigation">
+      <a mat-button routerLink="/claims" routerLinkActive="active-link">Claims</a>
+      <a mat-button routerLink="/claims/new" routerLinkActive="active-link">New Claim</a>
     </nav>
 
-    <div class="app-content">
-      <div class="app-topbar">
-        <mat-form-field appearance="outline" subscriptSizing="dynamic" class="user-selector">
-          <mat-label>Mock user</mat-label>
-          <mat-select [value]="authContext.activeUser().id" (selectionChange)="setActiveUser($event)">
-            @for (user of authContext.users; track user.id) {
-              <mat-option [value]="user.id">{{ user.displayName }} · {{ user.role }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
+    <span class="toolbar-spacer"></span>
 
-        <button
-          mat-icon-button
-          type="button"
-          (click)="toggleTheme()"
-          [title]="isDarkTheme ? 'Switch to light' : 'Switch to dark'"
-        >
-          <mat-icon>{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
-        </button>
-      </div>
+    <mat-form-field appearance="outline" subscriptSizing="dynamic" class="user-selector">
+      <mat-label>Mock user</mat-label>
+      <mat-select [value]="authContext.activeUser().id" (selectionChange)="setActiveUser($event)">
+        @for (user of authContext.users; track user.id) {
+          <mat-option [value]="user.id">{{ user.displayName }} · {{ user.role }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
 
-      <main class="app-main">
-        <router-outlet />
-      </main>
-    </div>
-  </div>
+    <button
+      mat-icon-button
+      type="button"
+      (click)="toggleTheme()"
+      [title]="isDarkTheme ? 'Switch to light' : 'Switch to dark'"
+    >
+      <mat-icon>{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
+  </mat-toolbar>
+
+  <main class="app-content">
+    <router-outlet />
+  </main>
 </div>
