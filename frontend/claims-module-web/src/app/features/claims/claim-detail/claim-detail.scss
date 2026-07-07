@@ -146,6 +146,33 @@ strong {
   background: #fbfcfe;
 }
 
+.reserve-summary-grid {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-bottom: 1rem;
+}
+
+.reserve-summary-card {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem;
+  border: 1px solid rgba(12, 26, 43, 0.1);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.reserve-summary-card span {
+  color: #536176;
+  font-size: 0.78rem;
+  font-weight: 650;
+  text-transform: uppercase;
+}
+
+.reserve-summary-card strong {
+  font-size: 1.25rem;
+}
+
 .row-actions,
 .reject-form {
   display: flex;
@@ -198,6 +225,10 @@ th {
 
   .reserve-form {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .reserve-summary-grid {
+    grid-template-columns: 1fr;
   }
 }
 

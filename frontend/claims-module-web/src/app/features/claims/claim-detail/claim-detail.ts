@@ -68,6 +68,19 @@ export class ClaimDetail implements OnInit {
   ];
   readonly auditColumns = ['createdAtUtc', 'action', 'actorUserId', 'details'];
   readonly auditLogEntries = computed(() => sortAuditEntries(this.claim()?.auditLogEntries ?? []));
+  readonly reserveSummary = computed(() => {
+    const reserves = this.claim()?.reserves ?? [];
+
+    return reserves.reduce(
+      (summary, reserve) => ({
+        total: summary.total + reserve.amount,
+        pendingApproval:
+          summary.pendingApproval + (reserve.status === 'PendingApproval' ? reserve.amount : 0),
+        approved: summary.approved + (reserve.status === 'Approved' ? reserve.amount : 0),
+      }),
+      { total: 0, pendingApproval: 0, approved: 0 },
+    );
+  });
   readonly canManageReserves = computed(() => {
     const role = this.authContext.activeUser().role;
     return role === 'Supervisor' || role === 'Manager';

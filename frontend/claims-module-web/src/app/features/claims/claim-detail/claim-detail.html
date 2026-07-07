@@ -178,6 +178,21 @@
               </button>
             </form>
 
+            <div class="reserve-summary-grid">
+              <div class="reserve-summary-card">
+                <span>Total Reserves</span>
+                <strong>{{ reserveSummary().total | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+              </div>
+              <div class="reserve-summary-card">
+                <span>Pending Approval</span>
+                <strong>{{ reserveSummary().pendingApproval | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+              </div>
+              <div class="reserve-summary-card">
+                <span>Approved & Posted</span>
+                <strong>{{ reserveSummary().approved | currency: 'USD' : 'symbol' : '1.2-2' }}</strong>
+              </div>
+            </div>
+
             @if (currentClaim.reserves.length === 0) {
               <p class="empty-text">No reserves recorded.</p>
             } @else {
