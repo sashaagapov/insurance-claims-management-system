@@ -91,7 +91,7 @@
           <ng-container matColumnDef="status">
             <th mat-header-cell *matHeaderCellDef>Status</th>
             <td mat-cell *matCellDef="let claim">
-              <mat-chip [class]="'status-chip status-' + claim.status" highlighted>
+              <mat-chip [class]="'status-chip status-' + claim.status.toLowerCase()" highlighted>
                 {{ claim.status }}
               </mat-chip>
             </td>
