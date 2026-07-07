@@ -291,7 +291,9 @@
                   </ng-container>
                   <ng-container matColumnDef="action">
                     <th mat-header-cell *matHeaderCellDef>Action</th>
-                    <td mat-cell *matCellDef="let entry">{{ entry.action }}</td>
+                    <td mat-cell *matCellDef="let entry">
+                      <span [class]="'audit-badge audit-' + entry.action">{{ entry.action }}</span>
+                    </td>
                   </ng-container>
                   <ng-container matColumnDef="actorUserId">
                     <th mat-header-cell *matHeaderCellDef>Actor</th>
