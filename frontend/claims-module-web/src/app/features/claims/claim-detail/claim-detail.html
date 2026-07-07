@@ -29,9 +29,9 @@
     <mat-card appearance="outlined" class="summary-card">
       <div>
         <span class="label">Status</span>
-        <mat-chip [class]="'status-chip status-' + currentClaim.status.toLowerCase()" highlighted>
+        <span [class]="'status-badge status-' + currentClaim.status.toLowerCase()">
           {{ currentClaim.status }}
-        </mat-chip>
+        </span>
         @if (currentClaim.status === 'Open') {
           <button
             mat-button
