@@ -130,8 +130,16 @@ namespace ClaimsModule.Persistence.Migrations
 
                     b.Property<string>("ClaimNumber")
                         .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("nvarchar(50)")
+                        .HasComputedColumnSql("'CLM-' + CONVERT(char(4), DATEPART(year, [CreatedAtUtc])) + '-' + RIGHT('0000000' + CONVERT(varchar(7), [ClaimSequenceNumber]), 7)", true);
+
+                    b.Property<int>("ClaimSequenceNumber")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ClaimSequenceNumber"));
 
                     b.Property<DateTime>("CreatedAtUtc")
                         .HasColumnType("datetime2");

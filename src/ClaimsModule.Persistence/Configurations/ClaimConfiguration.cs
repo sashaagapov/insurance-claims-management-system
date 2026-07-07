@@ -12,9 +12,15 @@ public class ClaimConfiguration : IEntityTypeConfiguration<Claim>
 
         builder.HasKey(claim => claim.Id);
 
+        builder.Property(claim => claim.ClaimSequenceNumber)
+            .ValueGeneratedOnAdd();
+
         builder.Property(claim => claim.ClaimNumber)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(50)
+            .HasComputedColumnSql(
+                "'CLM-' + CONVERT(char(4), DATEPART(year, [CreatedAtUtc])) + '-' + RIGHT('0000000' + CONVERT(varchar(7), [ClaimSequenceNumber]), 7)",
+                stored: true);
 
         builder.HasIndex(claim => claim.ClaimNumber)
             .IsUnique();

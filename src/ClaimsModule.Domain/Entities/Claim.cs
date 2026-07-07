@@ -5,6 +5,7 @@ namespace ClaimsModule.Domain.Entities;
 public class Claim
 {
     public Guid Id { get; set; }
+    public int ClaimSequenceNumber { get; set; }
     public string ClaimNumber { get; set; } = string.Empty;
     public Guid PolicyId { get; set; }
     public Policy? Policy { get; set; }

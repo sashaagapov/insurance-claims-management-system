@@ -55,7 +55,6 @@ public class CreateClaimCommandHandler(IClaimsModuleDbContext dbContext)
         var claim = new Claim
         {
             Id = Guid.NewGuid(),
-            ClaimNumber = GenerateClaimNumber(nowUtc),
             PolicyId = request.PolicyId,
             CauseOfLossCodeId = request.CauseOfLossCodeId,
             LossDate = request.LossDate,
@@ -90,16 +89,19 @@ public class CreateClaimCommandHandler(IClaimsModuleDbContext dbContext)
             });
         }
 
-        claim.AuditLogEntries.Add(new AuditLogEntry
+        dbContext.Claims.Add(claim);
+        await dbContext.SaveChangesAsync(cancellationToken);
+
+        dbContext.AuditLogEntries.Add(new AuditLogEntry
         {
             Id = Guid.NewGuid(),
+            ClaimId = claim.Id,
             Action = "ClaimCreated",
             ActorUserId = request.CreatedByUserId,
             CreatedAtUtc = nowUtc,
             Details = $"Claim {claim.ClaimNumber} was created through FNOL."
         });
 
-        dbContext.Claims.Add(claim);
         await dbContext.SaveChangesAsync(cancellationToken);
 
         return Result<CreateClaimResponse>.Success(new CreateClaimResponse(
@@ -107,11 +109,5 @@ public class CreateClaimCommandHandler(IClaimsModuleDbContext dbContext)
             claim.ClaimNumber,
             claim.Status,
             claim.ReportedAtUtc));
-    }
-
-    private static string GenerateClaimNumber(DateTime nowUtc)
-    {
-        var suffix = Guid.NewGuid().ToString("N")[..6].ToUpperInvariant();
-        return $"CLM-{nowUtc:yyyyMMdd}-{suffix}";
     }
 }
