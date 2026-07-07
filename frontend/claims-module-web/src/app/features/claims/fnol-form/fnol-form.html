@@ -198,9 +198,9 @@
             <ng-template matStepLabel>Review</ng-template>
 
             <div class="step-content review-grid">
-              <section>
+              <section class="review-card">
                 <h2>Claim</h2>
-                <dl>
+                <dl class="review-details">
                   <div>
                     <dt>Policy</dt>
                     <dd>
@@ -222,27 +222,47 @@
                 </dl>
               </section>
 
-              <section>
+              <section class="review-card">
                 <h2>Parties</h2>
-                <p>{{ parties.length }} party record(s)</p>
-              </section>
-
-              <section>
-                <h2>Risk Objects</h2>
-                <p>{{ riskObjects.length }} risk object record(s)</p>
-              </section>
-
-              <div class="step-actions wide-field">
-                <button mat-button type="button" matStepperPrevious>Back</button>
-                <button mat-flat-button type="submit" [disabled]="form.invalid || isSubmitting()">
-                  @if (isSubmitting()) {
-                    <mat-spinner diameter="20" />
-                    Creating...
-                  } @else {
-                    Submit Claim
+                <div class="review-list">
+                  @for (party of parties.controls; track $index) {
+                    <div class="review-row">
+                      <strong>{{ party.get('fullName')?.value || 'Unnamed party' }}</strong>
+                      <span>{{ party.get('partyType')?.value }}</span>
+                    </div>
                   }
-                </button>
-              </div>
+                </div>
+              </section>
+
+              <section class="review-card">
+                <h2>Risk Objects</h2>
+                <div class="review-list">
+                  @for (riskObject of riskObjects.controls; track $index) {
+                    <div class="review-row">
+                      <strong>{{ riskObject.get('objectType')?.value }}</strong>
+                      <span>{{ riskObject.get('description')?.value || 'No description' }}</span>
+                    </div>
+                  }
+                </div>
+              </section>
+
+              <section class="ready-panel wide-field">
+                <div>
+                  <h2>Ready to submit</h2>
+                  <p>The claim will be created with the selected policy, parties, and risk objects.</p>
+                </div>
+                <div class="step-actions">
+                  <button mat-button type="button" matStepperPrevious>Back</button>
+                  <button mat-flat-button type="submit" [disabled]="form.invalid || isSubmitting()">
+                    @if (isSubmitting()) {
+                      <mat-spinner diameter="20" />
+                      Creating...
+                    } @else {
+                      Create Claim
+                    }
+                  </button>
+                </div>
+              </section>
             </div>
           </mat-step>
         </mat-stepper>
