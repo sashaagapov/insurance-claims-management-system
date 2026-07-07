@@ -20,6 +20,15 @@
         }
       </mat-select>
     </mat-form-field>
+
+    <button
+      mat-icon-button
+      type="button"
+      (click)="toggleTheme()"
+      [title]="isDarkTheme ? 'Switch to light' : 'Switch to dark'"
+    >
+      <mat-icon>{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
   </mat-toolbar>
 
   <main class="app-content">
