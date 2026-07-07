@@ -36,7 +36,7 @@ There is more project structure than a single Web API project, but the separatio
 
 ## Decision 3: Mock Authentication For MVP
 
-Status: Planned
+Status: Implemented
 
 Decision:
 
@@ -52,7 +52,7 @@ This is not production-ready security. It is acceptable for a technical assessme
 
 ## Decision 4: SQL Server With Docker Preferred
 
-Status: Planned
+Status: Implemented
 
 Decision:
 
@@ -68,7 +68,7 @@ Local setup requires Docker. If Docker becomes a blocker, a documented fallback 
 
 ## Decision 5: Hangfire For GL Posting Simulation
 
-Status: Planned
+Status: Implemented
 
 Decision:
 
