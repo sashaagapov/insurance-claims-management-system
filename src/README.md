@@ -1,15 +1,15 @@
 # Source Structure
 
-This folder contains the backend Clean Architecture scaffold for the Claims Module MVP.
+This folder contains the .NET 9 Clean Architecture backend for the Claims Module MVP.
 
 ## Projects
 
-- `ClaimsModule.Domain`: entities, enums, value objects, domain events, and domain behavior later.
-- `ClaimsModule.Application`: MediatR commands/queries, DTOs, validators, and interfaces later.
-- `ClaimsModule.Persistence`: EF Core DbContext, configurations, migrations, and seed data later.
-- `ClaimsModule.Infrastructure`: Hangfire jobs, storage, and external service implementations later.
+- `ClaimsModule.Domain`: entities, enums, and domain model.
+- `ClaimsModule.Application`: MediatR commands/queries, DTOs, validators, interfaces, and business rules.
+- `ClaimsModule.Persistence`: EF Core DbContext, SQL Server configuration, migrations, and seed data.
+- `ClaimsModule.Infrastructure`: Hangfire GL posting simulation and infrastructure services.
 - `ClaimsModule.API`: ASP.NET Core startup, controllers, middleware, Swagger, and HTTP endpoints.
 
-## Current Phase
+## Current Implementation
 
-Phase 1 only creates the scaffold. It intentionally does not include claim logic, reserve logic, EF entities, migrations, authentication, or frontend code.
+Implemented scope includes FNOL claim creation, claim list/detail, claim status transitions, reserve creation/approval/rejection, Hangfire-backed GL posting simulation, audit logging, an Angular frontend MVP, and backend integration tests.
