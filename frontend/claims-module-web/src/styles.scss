@@ -5,32 +5,6 @@
 // custom components at https://material.angular.dev/guide/theming
 @use '@angular/material' as mat;
 
-:root {
-  --bg-page: #f0f2f5;
-  --bg-card: #ffffff;
-  --bg-sidebar: #ffffff;
-  --bg-toolbar: #ffffff;
-  --bg-row-hover: rgba(25, 118, 210, 0.05);
-  --text-primary: #0f172a;
-  --text-secondary: #64748b;
-  --text-muted: #94a3b8;
-  --border-color: #e2e8f0;
-  --accent: #1976d2;
-}
-
-:root[data-theme="dark"] {
-  --bg-page: #0f1117;
-  --bg-card: #13161f;
-  --bg-sidebar: #13161f;
-  --bg-toolbar: #13161f;
-  --bg-row-hover: rgba(255, 255, 255, 0.03);
-  --text-primary: #e2e8f0;
-  --text-secondary: #94a3b8;
-  --text-muted: #4a5568;
-  --border-color: #1e2230;
-  --accent: #4f8ef7;
-}
-
 html {
   height: 100%;
   @include mat.theme(

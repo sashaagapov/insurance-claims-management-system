@@ -25,14 +25,8 @@ import { AuthContextService } from './core/services/auth-context.service';
 })
 export class App {
   readonly authContext = inject(AuthContextService);
-  isDarkTheme = false;
 
   setActiveUser(event: MatSelectChange): void {
     this.authContext.setActiveUser(event.value);
-  }
-
-  toggleTheme(): void {
-    this.isDarkTheme = !this.isDarkTheme;
-    document.documentElement.setAttribute('data-theme', this.isDarkTheme ? 'dark' : 'light');
   }
 }
