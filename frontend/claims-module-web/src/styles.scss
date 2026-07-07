@@ -31,6 +31,40 @@
   --accent: #4f8ef7;
 }
 
+body {
+  background: var(--bg-page);
+  color: var(--text-primary);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+mat-card,
+.mat-mdc-card {
+  background: var(--bg-card) !important;
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary) !important;
+}
+
+.mat-mdc-table {
+  background: var(--bg-card) !important;
+}
+
+.mat-mdc-row:hover {
+  background: var(--bg-row-hover) !important;
+  cursor: pointer;
+}
+
+.mat-mdc-header-cell {
+  color: var(--text-secondary) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.mat-mdc-cell {
+  color: var(--text-primary) !important;
+}
+
 html {
   height: 100%;
   @include mat.theme(
