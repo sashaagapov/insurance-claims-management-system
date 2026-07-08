@@ -17,11 +17,12 @@ jobs:
         image: mcr.microsoft.com/mssql/server:2022-latest
         env:
           ACCEPT_EULA: Y
-          SA_PASSWORD: YourStrong!Passw0rd
+          SA_PASSWORD: Local_dev_password_123!
+          MSSQL_SA_PASSWORD: Local_dev_password_123!
         ports:
           - 1433:1433
         options: >-
-          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'YourStrong!Passw0rd' -Q 'SELECT 1' -C"
+          --health-cmd "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Local_dev_password_123!' -Q 'SELECT 1' -C"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 10
