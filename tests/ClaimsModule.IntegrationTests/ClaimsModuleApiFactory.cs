@@ -1,3 +1,4 @@
+using ClaimsModule.Application.Interfaces;
 using ClaimsModule.Persistence;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -44,6 +45,10 @@ public sealed class ClaimsModuleApiFactory : WebApplicationFactory<Program>, IAs
 
             configuration.AddInMemoryCollection(settings);
         });
+        builder.ConfigureServices(services =>
+        {
+            services.AddSingleton<IReserveGlPostingJobQueue, NoOpReserveGlPostingJobQueue>();
+        });
     }
 
     private async Task CreateDatabaseAsync()
@@ -84,5 +89,12 @@ public sealed class ClaimsModuleApiFactory : WebApplicationFactory<Program>, IAs
             TrustServerCertificate = true,
             Encrypt = true
         }.ConnectionString;
+    }
+}
+
+public sealed class NoOpReserveGlPostingJobQueue : IReserveGlPostingJobQueue
+{
+    public void EnqueueReservePosting(Guid reserveId)
+    {
     }
 }

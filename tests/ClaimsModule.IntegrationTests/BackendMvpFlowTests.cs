@@ -150,6 +150,10 @@ public sealed class BackendMvpFlowTests(ClaimsModuleApiFactory factory)
         var claim = await CreateClaimAsync();
         var reserve = await CreateReserveAsync(claim.ClaimId, 5000m, HandlerUserId);
 
+        using var scope = factory.Services.CreateScope();
+        var job = scope.ServiceProvider.GetRequiredService<ReserveGlPostingJob>();
+        await job.PostReserveAsync(reserve.ReserveId);
+
         var postedReserve = await PollForPostedReserveAsync(claim.ClaimId, reserve.ReserveId);
         var firstReference = postedReserve.GlPostingReference;
         Assert.NotNull(postedReserve.GlPostedAtUtc);
@@ -158,8 +162,6 @@ public sealed class BackendMvpFlowTests(ClaimsModuleApiFactory factory)
         var detailAfterPosting = await GetClaimDetailAsync(claim.ClaimId);
         Assert.Single(detailAfterPosting.AuditLogEntries, audit => audit.Action == "ReserveGlPosted");
 
-        using var scope = factory.Services.CreateScope();
-        var job = scope.ServiceProvider.GetRequiredService<ReserveGlPostingJob>();
         await job.PostReserveAsync(reserve.ReserveId);
 
         var detailAfterSecondRun = await GetClaimDetailAsync(claim.ClaimId);
