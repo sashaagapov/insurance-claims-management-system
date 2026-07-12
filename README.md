@@ -1,4 +1,4 @@
-Insurance Claims Management System
+**Insurance Claims Management System**
 
 This repository contains an MVP implementation of a simplified Claims Management System in the insurance domain.
 
