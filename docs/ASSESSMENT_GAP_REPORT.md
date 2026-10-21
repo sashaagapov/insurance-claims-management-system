@@ -369,6 +369,7 @@ The current state demonstrates:
 - Append-only audit log
 - Working Angular frontend with all core screens
 - Automated integration tests covering the full backend MVP flow
+- Complete documentation of scope and tradeoffs
 
 **How to frame the gaps during review:**
 
@@ -407,6 +408,7 @@ Complete Phase 9B (demo polish + server-side filtering) before submission:
 | Risk | Severity | Notes |
 |---|---|---|
 | Adding real auth breaks existing test setup | High | Mock user pattern is deeply integrated |
+| Adding Azure deployment introduces credentials risk | High | Deployment credentials require secure handling |
 | Adding CI/CD may introduce secrets exposure | Medium | Needs careful secrets management |
 | Adding NgRx increases complexity without assessment value | Medium | Explicitly out of scope |
 | Adding E2E tests on macOS requires browser tooling | Medium | Browser automation blocked on macOS |

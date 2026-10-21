@@ -2,6 +2,7 @@
 
 ## Phase 0: Repository/Context Setup
 
+Goal: Prepare the repository scope and implementation plan.
 
 Expected output:
 
@@ -25,6 +26,7 @@ What I must understand and explain:
 
 Suggested commit message:
 
+`docs: initialize assessment context`
 
 ## Phase 1: Backend Solution Scaffold
 
